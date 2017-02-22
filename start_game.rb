@@ -7,13 +7,14 @@ class StartGame
 
   def initialize
     @colors = ["r", "b", "y", "g"]
-    @shuffled = shuffled
+    @shuffled = shuffle_elements
     @number_of_guesses = 0
-    @start_of_game = Time.now.to_i
+    @start_of_game = Time.now
+    @end_of_game = nil
   end
 
   def shuffle_elements
-    shuffle = @colors.shuffle
+    @colors.shuffle
   end
 
   def play
@@ -26,19 +27,18 @@ class StartGame
     """
     game_repeat = false
 
-    @start_of_game
+
 
     while true
       print "> "
       guess = gets.chomp.downcase
       @number_of_guesses += 1
-      guess_array = guess.split("")
 
       if guess == "q" || guess == "quit"
         puts "Goodbye!"
         exit
       elsif guess == ("c") || guess == ("cheat")
-        puts "The secret code is #{shuffle_elements.join}"
+        puts "The secret code is #{@shuffled.join}"
         play
       elsif guess.length < 4
         puts "Your guess is too short. Please input another guess"
@@ -46,29 +46,30 @@ class StartGame
       elsif guess.length > 4
         puts "Your guess is too long. Please input another guess"
         game_repeat
-      elsif guess_array == shuffle_elements
-        winner_next_move = EndGame.new
-        winner_next_move.final_phase
-      elsif guess != shuffle_elements
+      elsif guess == @shuffled.join
+        winner = EndGame.new(self)
+        winner.final_phase
+      elsif guess != @shuffled.join
         compare_guesses(guess)
+        game_repeat
       end
     end
   end
 
     def compare_guesses(guess)
-      matches = (guess.chars & shuffle_elements).count
+      matches = (guess.chars & @shuffled).count
       correct_positions = 0
       guess.chars.each.with_index do |color, index|
-          if shuffle_elements[index] == color
-            correct_positions += 1
-          end
+        if @shuffled[index] == color
+          correct_positions += 1
         end
-          puts "You have #{matches} correct elements with #{correct_positions} in correct positions"
+        puts "You have '#{matches}' of the correct elements with #{correct_positions} in correct position(s)."
+        puts "You've taken #{@number_of_guesses}"
     end
 
 
   def time_lapsed
-    @start_of_game.to_i - Time.now.to_i
+    @start_of_game - Time.now
   end
 
 end

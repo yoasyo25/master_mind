@@ -1,13 +1,16 @@
 class EndGame
 
+  def initialize(game)
+    @game = game
+  end
+
   def final_phase
       puts """
-      Congratulations! You guessed the secret code of #{StartGame.new.shuffle_elements.join} in #{StartGame.new.number_of_guesses} guesses over
-      #{StartGame.new.time_lapsed} mins.
+      Congratulations! You guessed the secret code of '#{@game.shuffled.join}'q in #{@game.number_of_guesses} guesses over
+      #{@game.time_lapsed} seconds.
 
       Do you want to (p)lay again or (q)uit?
       """
-
       game_on = false
 
       while true

@@ -7,6 +7,7 @@ class Welcome
     puts "Welcome to MasterMind\n\n"
     puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
     print "> "
+
     user_input = gets.chomp.downcase
 
     if user_input == "p" || user_input == "play"
